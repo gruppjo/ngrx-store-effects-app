@@ -1,5 +1,6 @@
 import * as fromPizzas from '../actions/pizzas.action';
 import { Pizza } from '../../models/pizza.model';
+import { toPayload } from '@ngrx/effects';
 
 export interface PizzaState {
   data: Pizza[];
@@ -8,18 +9,7 @@ export interface PizzaState {
 };
 
 export const initialState: PizzaState = {
-  data: [
-    {
-      "name": "Plain Ol' Pepperoni",
-      "toppings": [
-        {
-          "id": 10,
-          "name": "pepperoni"
-        }
-      ],
-      "id": 3
-    }
-  ],
+  data: [],
   loaded: false,
   loading: false
 };
@@ -29,17 +19,21 @@ export function reducer(
   action: fromPizzas.PizzasAction
 ): PizzaState {
   switch (action.type) {
+    // called in component
     case fromPizzas.LOAD_PIZZAS: {
       return {
         ...state,
         loading: true
       };
     }
+    // called via effect
     case fromPizzas.LOAD_PIZZAS_SUCCESS: {
+      const data = action.payload;
       return  {
         ...state,
         loaded: true,
-        loading: false
+        loading: false,
+        data
       };
     }
     case fromPizzas.LOAD_PIZZAS_FAIL: {

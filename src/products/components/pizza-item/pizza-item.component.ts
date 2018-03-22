@@ -17,7 +17,7 @@ import {
           [pizza]="pizza">
         </pizza-display>
         <h4>{{ pizza.name }}</h4>
-        <button type="button" class="btn btn__ok">
+        <button type="button" class="btn btn-ok">
           View Pizza
         </button>
       </a>

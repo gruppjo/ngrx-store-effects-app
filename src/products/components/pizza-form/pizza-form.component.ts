@@ -22,32 +22,33 @@ import { Topping } from '../../models/topping.model';
 
 @Component({
   selector: 'pizza-form',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['pizza-form.component.scss'],
   template: `
     <div class="pizza-form">
       <form [formGroup]="form">
-      
+
         <label>
           <h4>Pizza name</h4>
-          <input 
-            type="text" 
+          <input
+            type="text"
             formControlName="name"
             placeholder="e.g. Pepperoni"
-            class="pizza-form__input"
+            class="pizza-form-input"
             [class.error]="nameControlInvalid">
           <div
-            class="pizza-form__error"
+            class="pizza-form-error"
             *ngIf="nameControlInvalid">
             <p>Pizza must have a name</p>
           </div>
         </label>
-      
+
         <ng-content></ng-content>
 
         <label>
           <h4>Select toppings</h4>
         </label>
-        <div class="pizza-form__list">
+        <div class="pizza-form-list">
 
           <pizza-toppings
             [toppings]="toppings"
@@ -56,10 +57,10 @@ import { Topping } from '../../models/topping.model';
 
         </div>
 
-        <div class="pizza-form__actions">
+        <div class="pizza-form-actions">
           <button
             type="button"
-            class="btn btn__ok"
+            class="btn btn-ok"
             *ngIf="!exists"
             (click)="createPizza(form)">
             Create Pizza
@@ -67,7 +68,7 @@ import { Topping } from '../../models/topping.model';
 
           <button
             type="button"
-            class="btn btn__ok"
+            class="btn btn-ok"
             *ngIf="exists"
             (click)="updatePizza(form)">
             Save changes
@@ -75,7 +76,7 @@ import { Topping } from '../../models/topping.model';
 
           <button
             type="button"
-            class="btn btn__warning"
+            class="btn btn-warning"
             *ngIf="exists"
             (click)="removePizza(form)">
             Delete Pizza
@@ -92,7 +93,7 @@ export class PizzaFormComponent implements OnChanges {
   @Input() pizza: Pizza;
   @Input() toppings: Topping[];
 
-  @Output() selected = new EventEmitter<number[]>();
+  @Output() selected = new EventEmitter<Pizza>();
   @Output() create = new EventEmitter<Pizza>();
   @Output() update = new EventEmitter<Pizza>();
   @Output() remove = new EventEmitter<Pizza>();

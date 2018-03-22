@@ -3,7 +3,7 @@
 }
 .products {
   position: relative;
-  &__new {
+  &-new {
     margin: -35px -35px 35px;
     background: #f9f9f9;
     padding: 35px;
@@ -11,7 +11,7 @@
     justify-content: center;
     align-items: center;
   }
-  &__list {
+  &-list {
     display: flex;
     flex-wrap: wrap;
     pizza-item {

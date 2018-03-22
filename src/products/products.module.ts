@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
+// store
 import { reducers, effects } from './store';
 
 // components
@@ -15,6 +16,9 @@ import * as fromComponents from './components';
 // containers
 import * as fromContainers from './containers';
 
+// guards
+import * as fromGuards from './guards';
+
 // services
 import * as fromServices from './services';
 
@@ -22,16 +26,24 @@ import * as fromServices from './services';
 export const ROUTES: Routes = [
   {
     path: '',
-    component: fromContainers.ProductsComponent,
-  },
-  {
-    path: ':id',
-    component: fromContainers.ProductItemComponent,
-  },
-  {
-    path: 'new',
-    component: fromContainers.ProductItemComponent,
-  },
+    component: fromContainers.ProductsRoutingComponent,
+    canActivate: [fromGuards.PizzasGuard, fromGuards.ToppingsGuard],
+    children: [
+      {
+        path: '',
+        component: fromContainers.ProductsComponent
+      },
+      {
+        path: 'new',
+        component: fromContainers.ProductItemComponent
+      },
+      {
+        path: ':pizzaId',
+        canActivate: [fromGuards.PizzaExistsGuard],
+        component: fromContainers.ProductItemComponent
+      }
+    ]
+  }
 ];
 
 @NgModule({
@@ -40,11 +52,16 @@ export const ROUTES: Routes = [
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule.forChild(ROUTES),
+    // lazy load this part of the store
+    // and bind it to root store
     StoreModule.forFeature('products', reducers),
     EffectsModule.forFeature(effects)
   ],
-  providers: [...fromServices.services],
+  providers: [
+    ...fromServices.services,
+    ...fromGuards.guards
+  ],
   declarations: [...fromContainers.containers, ...fromComponents.components],
-  exports: [...fromContainers.containers, ...fromComponents.components],
+  exports: [...fromContainers.containers, ...fromComponents.components]
 })
 export class ProductsModule {}

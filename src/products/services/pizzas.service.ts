@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { catchError } from 'rxjs/operators';
-import 'rxjs/add/observable/throw';
 
 import { Pizza } from '../models/pizza.model';
 
@@ -13,25 +12,25 @@ export class PizzasService {
 
   getPizzas(): Observable<Pizza[]> {
     return this.http
-      .get<Pizza[]>(`/api/pizzas`)
+      .get<Pizza[]>(`http://localhost:4201/api/pizzas`)
       .pipe(catchError((error: any) => Observable.throw(error.json())));
   }
 
   createPizza(payload: Pizza): Observable<Pizza> {
     return this.http
-      .post<Pizza>(`/api/pizzas`, payload)
+      .post<Pizza>(`http://localhost:4201/api/pizzas`, payload)
       .pipe(catchError((error: any) => Observable.throw(error.json())));
   }
 
   updatePizza(payload: Pizza): Observable<Pizza> {
     return this.http
-      .put<Pizza>(`/api/pizzas/${payload.id}`, payload)
+      .put<Pizza>(`http://localhost:4201/api/pizzas/${payload.id}`, payload)
       .pipe(catchError((error: any) => Observable.throw(error.json())));
   }
 
   removePizza(payload: Pizza): Observable<Pizza> {
     return this.http
-      .delete<any>(`/api/pizzas/${payload.id}`)
+      .delete<any>(`http://localhost:4201/api/pizzas/${payload.id}`)
       .pipe(catchError((error: any) => Observable.throw(error.json())));
   }
 }

@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { catchError } from 'rxjs/operators';
-import 'rxjs/add/observable/throw';
 
 import { Topping } from '../models/topping.model';
 
@@ -13,7 +12,7 @@ export class ToppingsService {
 
   getToppings(): Observable<Topping[]> {
     return this.http
-      .get<Topping[]>(`/api/toppings`)
+      .get<Topping[]>(`http://localhost:4201/api/toppings`)
       .pipe(catchError((error: any) => Observable.throw(error.json())));
   }
 }

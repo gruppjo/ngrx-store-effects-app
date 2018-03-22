@@ -3,8 +3,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import {
+  StoreRouterConnectingModule,
+  RouterStateSerializer
+} from '@ngrx/router-store';
 import { StoreModule, MetaReducer } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+
+// global custom reducers
+import { reducers, effects, CustomSerializer } from './store';
 
 // not used in production
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -28,20 +35,29 @@ export const ROUTES: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'products' },
   {
     path: 'products',
-    loadChildren: '../products/products.module#ProductsModule',
-  },
+    loadChildren: '../products/products.module#ProductsModule'
+  }
 ];
 
 @NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot(ROUTES),
-    StoreModule.forRoot({}, { metaReducers }),
-    EffectsModule.forRoot([]),
-    environment.development ? StoreDevtoolsModule.instrument() : [],
+    RouterModule.forRoot(ROUTES, { useHash: true }),
+    StoreModule.forRoot(reducers, { metaReducers }),
+    EffectsModule.forRoot(effects),
+    StoreRouterConnectingModule,
+    !environment.production ? StoreDevtoolsModule.instrument() : []
+  ],
+  providers: [
+    // replace RouterStateSerializer with our CustomSerializer
+    // for StoreRouterConnectingModule
+    {
+      provide: RouterStateSerializer,
+      useClass: CustomSerializer
+    }
   ],
   declarations: [AppComponent],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

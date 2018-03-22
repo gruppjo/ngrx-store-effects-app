@@ -27,13 +27,13 @@ export const DROP_ANIMATION = trigger('drop', [
   styleUrls: ['pizza-display.component.scss'],
   template: `
     <div class="pizza-display">
-      <div class="pizza-display__base">
+      <div class="pizza-display-base">
         <img src="/assets/img/pizza.svg">
-        <img 
+        <img
           *ngFor="let topping of pizza?.toppings; index as i;"
-          src="/assets/img/toppings/{{ topping.name }}.svg" 
+          src="/assets/img/toppings/{{ topping.name }}.svg"
           [style.zIndex]="i"
-          class="pizza-display__topping"
+          class="pizza-display-topping"
           @drop>
       </div>
     </div>
